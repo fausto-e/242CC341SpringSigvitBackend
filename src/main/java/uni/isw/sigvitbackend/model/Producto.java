@@ -1,120 +1,46 @@
 package uni.isw.sigvitbackend.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Table;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Id;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+@Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "producto")
 public class Producto {
-    private int idProduct;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_producto",nullable = false)
+    private int idProducto;
+    @Column(name = "descripcion", nullable = true)
     private String descripcion;
+    @Column(name = "nombre", nullable = false)
     private String nombre;
-    private double precio;
+    @Column(name = "precio_venta", nullable = false)
+    private double precioVenta;
+    @Column(name = "precio_compra", nullable = false)
+    private double precioCompra;
+    @Column(name = "stock", nullable = false)
     private int stock;
-    private Carrito carrito;
-    private Almacen almacen;
-    private LineaCompra lineaCompra;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ruc_proveedor", referencedColumnName = "ruc")
     private Proveedor proveedor;
-
-    public Producto(int idProduct, String descripcion, String nombre, double precio, int stock) {
-        this.idProduct = idProduct;
-        this.descripcion = descripcion;
-        this.nombre = nombre;
-        this.precio = precio;
-        this.stock = stock;
-    }
-
-    public Carrito getCarrito() {
-        return carrito;
-    }
-
-    public void setCarrito(Carrito carrito) {
-        this.carrito = carrito;
-    }
-
-    public Almacen getAlmacen() {
-        return almacen;
-    }
-
-    public void setAlmacen(Almacen almacen) {
-        this.almacen = almacen;
-    }
-
-    public LineaCompra getLineaCompra() {
-        return lineaCompra;
-    }
-
-    public void setLineaCompra(LineaCompra lineaCompra) {
-        this.lineaCompra = lineaCompra;
-    }
-
-    public Proveedor getProveedor() {
-        return proveedor;
-    }
-
-    public void setProveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
-    }
-
-    public int getIdProduct() {
-        return idProduct;
-    }
-
-    public void setIdProduct(int idProduct) {
-        this.idProduct = idProduct;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
-
-    public void mostrarDetalle(Producto producto) {
-        System.out.println("Nombre del producto "+nombre);
-        System.out.println("Precio del producto "+precio);
-        System.out.println("Stock del producto "+stock);
-        System.out.println("Descripcion del producto "+descripcion);
-    }
-
-    public void solicitarProducto(Producto producto){
-        if(producto != null){
-            System.out.println("Producto solicitado");
-        }else{
-            System.out.println("Ingrese producto");
-        }
-    }
-
-    public int showStockProduct(Producto producto){
-        return stock;
-    }
-
-    public boolean registrarProducto(Producto producto){
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public String buscarProducto(Producto producto){
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria")
+    private Categoria categoria;
 }
