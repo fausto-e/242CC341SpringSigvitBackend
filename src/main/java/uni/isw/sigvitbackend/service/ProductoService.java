@@ -55,54 +55,30 @@ public class ProductoService {
         return pr;
     }
     public ProductoResponse updateProducto(ProductoRequest productoRequest){
-        Producto producto = productoRepository.findById((long)productoRequest.getIdProducto()).orElse(null);
-        if (producto == null) {
-          return new ProductoResponse();
-        }
+        long rucProv = productoRequest.getRucProveedor();
+        Proveedor proveedor = proveedorRepository.findById(rucProv).get();
+        if(proveedor == null)
+            return new ProductoResponse();
         
-        Proveedor proveedor = null;
-        if (productoRequest.getRucProveedor()!= 0) {
-            proveedor = proveedorRepository.findById((long)productoRequest.getRucProveedor()).orElse(null);
-            if (proveedor == null) {
-              return new ProductoResponse();
-            }
-        } else {
-            proveedor = producto.getProveedor();
-        }
+        long idCate = productoRequest.getIdCategoria();
+        Categoria categoria = categoriaRepository.findById(idCate).get();
+        if(categoria == null)
+            return new ProductoResponse();
         
-        Categoria categoria = null;
-        if (productoRequest.getIdCategoria() != 0) {
-            long idCat = productoRequest.getIdCategoria();
-            categoria = categoriaRepository.findById(idCat).orElse(null);
-            if (categoria == null) {
-              return new ProductoResponse();
-            }
-        } else {
-            categoria = producto.getCategoria();
-        }
-
-        if (productoRequest.getDescripcion() != null && !productoRequest.getDescripcion().isEmpty()) {
-          producto.setDescripcion(productoRequest.getDescripcion());
-        }
-        if (productoRequest.getNombre() != null && !productoRequest.getNombre().isEmpty()) {
-          producto.setNombre(productoRequest.getNombre());
-        }
-        if (productoRequest.getPrecioVenta() > 0) {
-          producto.setPrecioVenta(productoRequest.getPrecioVenta());
-        }
-        if (productoRequest.getPrecioCompra() > 0) {
-          producto.setPrecioCompra(productoRequest.getPrecioCompra());
-        }
-        if (productoRequest.getStock() >= 0) {
-          producto.setStock(productoRequest.getStock());
-        }
-
-        producto.setProveedor(proveedor);
-        producto.setCategoria(categoria);
-
-        productoRepository.save(producto);
-
-        return ProductoResponse.fromEntity(producto);
+        Producto producto = new Producto(
+                productoRequest.getIdProducto(),
+                productoRequest.getDescripcion(),
+                productoRequest.getNombre(),
+                productoRequest.getPrecioVenta(),
+                productoRequest.getPrecioCompra(),
+                productoRequest.getStock(),
+                proveedor,
+                categoria
+        );
+        
+        producto = productoRepository.save(producto);
+        ProductoResponse productoResponse = ProductoResponse.fromEntity(producto);
+        return productoResponse;
     }
     public void deleteProducto(Long id){
         productoRepository.deleteById(id);

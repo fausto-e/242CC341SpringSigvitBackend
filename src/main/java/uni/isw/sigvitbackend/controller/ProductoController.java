@@ -84,13 +84,17 @@ public class ProductoController {
         logger.info(">update "+ productoRequest.toString());
         ProductoResponse productoResponse = null;
         try {
+       
+            productoResponse = productoService.findProducto((long)productoRequest.getIdProducto());
+            if (productoResponse == null)
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.builder().message("Producto not found").build());
             productoResponse = productoService.updateProducto(productoRequest);
         } catch (Exception e) {
             logger.error("Error al actualizar el producto", e);
             return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if(productoResponse == null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.builder().message("Producto no actualizado").build());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.builder().message("Producto not updated").build());
             
         return ResponseEntity.ok(productoResponse);
     }
@@ -100,17 +104,14 @@ public class ProductoController {
         logger.info(">delete "+ productoRequest.toString());
         ProductoResponse productoResponse = null;
         try {
-            long id = productoRequest.get().getIdProducto();
-            productoResponse = productoService.findProducto(id);
-            if(productoResponse != null)
-                productoService.deleteProducto(id);
+            productoResponse = productoService.findProducto((long) productoRequest.get().getIdProducto());
+            if(productoResponse == null)
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.builder().message("Producto not found to delete").build());
+            productoService.deleteProducto((long) productoRequest.get().getIdProducto());
         } catch (Exception e) {
             logger.error("Error al eliminar el producto", e);
             return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        if(productoResponse == null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.builder().message("Producto no eliminado").build());
-            
         return ResponseEntity.ok(productoResponse);
     }
 }
