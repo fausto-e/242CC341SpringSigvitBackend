@@ -22,4 +22,5 @@ public class ProductoRequest {
     private int stock;
     private int idCategoria;
     private long rucProveedor;
+    private String imagen;
 }

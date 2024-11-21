@@ -35,6 +35,8 @@ public class Producto {
     private double precioCompra;
     @Column(name = "stock", nullable = false)
     private int stock;
+    @Column(name = "imagen")
+    private String imagen;
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ruc_proveedor", referencedColumnName = "ruc")

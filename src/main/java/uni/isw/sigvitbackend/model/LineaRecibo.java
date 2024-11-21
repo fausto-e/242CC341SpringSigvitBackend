@@ -1,40 +1,33 @@
 package uni.isw.sigvitbackend.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.EmbeddedId;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "linea_recibo")
 public class LineaRecibo {
+    @EmbeddedId
+    private LineaReciboId lineaReciboId;
+    
+    @Column(name = "cantidad",nullable = false)
     private int cantidad;
+    @Column(name = "precio",nullable = false)
     private int precio;
-    private ComprobantePago comprobante;
-
-    public LineaRecibo(int cantidad, int precio) {
-        this.cantidad = cantidad;
-        this.precio = precio;
-    }
-
-    public ComprobantePago getComprobante() {
-        return comprobante;
-    }
-
-    public void setComprobante(ComprobantePago comprobante) {
-        this.comprobante = comprobante;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public int getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(int precio) {
-        this.precio = precio;
-    }
-
+    
     public double subtotal(){
-        return (double) cantidad*precio;
+        return cantidad * precio;
     }
 }

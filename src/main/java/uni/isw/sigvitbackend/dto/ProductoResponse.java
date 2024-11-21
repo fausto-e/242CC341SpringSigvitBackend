@@ -25,6 +25,7 @@ public class ProductoResponse {
     private String categoriaNombre;
     private String categoriaDescripcion;
     private String nombreProveedor;
+    private String imagen;
     
     public static ProductoResponse fromEntity(Producto producto){
         return ProductoResponse.builder()
@@ -36,6 +37,7 @@ public class ProductoResponse {
                 .categoriaNombre(producto.getCategoria().getNombre())
                 .categoriaDescripcion(producto.getCategoria().getDescripcion())
                 .nombreProveedor(producto.getProveedor().getNombreEmpresa())
+                .imagen(producto.getImagen())
                 .build();
     }
     

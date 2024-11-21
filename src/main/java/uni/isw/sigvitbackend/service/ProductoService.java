@@ -46,8 +46,10 @@ public class ProductoService {
                 productoRequest.getPrecioVenta(),
                 productoRequest.getPrecioCompra(),
                 productoRequest.getStock(),
+                productoRequest.getImagen(),
                 proveedor,
                 categoria
+                
         );
         
         productoRepository.save(producto);
@@ -72,6 +74,7 @@ public class ProductoService {
                 productoRequest.getPrecioVenta(),
                 productoRequest.getPrecioCompra(),
                 productoRequest.getStock(),
+                productoRequest.getImagen(),
                 proveedor,
                 categoria
         );
