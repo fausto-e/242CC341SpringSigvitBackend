@@ -12,10 +12,6 @@ import uni.isw.sigvitbackend.repository.CategoriaRepository;
 import uni.isw.sigvitbackend.repository.ProductoRepository;
 import uni.isw.sigvitbackend.repository.ProveedorRepository;
 
-/**
- *
- * @author user0
- */
 @Service
 public class ProductoService {
     @Autowired

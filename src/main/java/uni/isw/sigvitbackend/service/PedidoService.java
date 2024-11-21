@@ -5,13 +5,14 @@
 package uni.isw.sigvitbackend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import uni.isw.sigvitbackend.dto.ClienteResponse;
+import org.springframework.stereotype.Service;
 import uni.isw.sigvitbackend.dto.PedidoRequest;
 import uni.isw.sigvitbackend.dto.ProductoRequest;
 import uni.isw.sigvitbackend.model.Cliente;
 import uni.isw.sigvitbackend.model.ComprobantePago;
+import uni.isw.sigvitbackend.model.LineaRecibo;
+import uni.isw.sigvitbackend.model.LineaReciboId;
 import uni.isw.sigvitbackend.model.Pedido;
-import uni.isw.sigvitbackend.model.Persona;
 import uni.isw.sigvitbackend.model.Producto;
 import uni.isw.sigvitbackend.repository.ClienteRepository;
 import uni.isw.sigvitbackend.repository.ComprobantePagoRepository;
@@ -19,6 +20,7 @@ import uni.isw.sigvitbackend.repository.LineaReciboRepository;
 import uni.isw.sigvitbackend.repository.PedidoRepository;
 import uni.isw.sigvitbackend.repository.ProductoRepository;
 
+@Service
 public class PedidoService {
     @Autowired
     PedidoRepository pedidoRepository;
@@ -38,10 +40,10 @@ public class PedidoService {
                 pr.getFechaPedido(),
                 null
         );
-        Cliente cliente = clienteRepository.findById(pr.getIdCliente()).get();
         cpRepository.save(comprobante);
+        Cliente cliente = clienteRepository.findById(pr.getIdCliente()).get();
         
-        //Guardamos el pd en la bd
+        //Guardamos el pedido en la bd
         Pedido pedido = new Pedido(
                 pr.getIdPedido(),
                 cliente,
@@ -57,7 +59,16 @@ public class PedidoService {
                     producto.getStock() - productoRequest.getStock()
             );
             productoRepository.save(producto);
-
+            
+            LineaRecibo lineaRecibo = new LineaRecibo(
+                    new LineaReciboId(
+                            comprobante,
+                            producto
+                    ),
+                    productoRequest.getStock(),
+                    producto.getPrecioVenta()
+            );
+            lrRepository.save(lineaRecibo);
         }
         
         

@@ -17,9 +17,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PedidoRequest {
     //datos pedido
-    Integer idPedido;//nullable
-    Integer idCliente;
-    Integer nroComprobante; //nullable
+    int idPedido;//nullable
+    int idCliente;
+    int nroComprobante; //nullable
     String direccionEntrega;
     Timestamp fechaPedido;
     

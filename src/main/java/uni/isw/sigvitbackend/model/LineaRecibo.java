@@ -25,7 +25,7 @@ public class LineaRecibo {
     @Column(name = "cantidad",nullable = false)
     private int cantidad;
     @Column(name = "precio",nullable = false)
-    private int precio;
+    private double precio;
     
     public double subtotal(){
         return cantidad * precio;
